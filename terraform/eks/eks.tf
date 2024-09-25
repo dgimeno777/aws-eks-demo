@@ -1,7 +1,8 @@
 
-resource "aws_eks_cluster" "example" {
+resource "aws_eks_cluster" "eks" {
   name     = "${local.resource_name_prefix}-${local.resource_name_suffix}"
   role_arn = aws_iam_role.eks.arn
+  bootstrap_self_managed_addons = true
 
   vpc_config {
     subnet_ids             = var.vpc_subnet_ids
