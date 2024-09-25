@@ -1,7 +1,7 @@
 
 resource "aws_eks_cluster" "eks" {
-  name     = "${local.resource_name_prefix}-${local.resource_name_suffix}"
-  role_arn = aws_iam_role.eks.arn
+  name                          = "${local.resource_name_prefix}-${local.resource_name_suffix}"
+  role_arn                      = aws_iam_role.eks.arn
   bootstrap_self_managed_addons = true
 
   vpc_config {
@@ -29,13 +29,13 @@ resource "aws_eks_cluster" "eks" {
 }
 
 resource "aws_eks_access_entry" "dgimeno" {
-  cluster_name      = aws_eks_cluster.eks.name
-  principal_arn     = data.aws_iam_user.dgimeno.arn
-  type              = "STANDARD"
+  cluster_name  = aws_eks_cluster.eks.name
+  principal_arn = data.aws_iam_user.dgimeno.arn
+  type          = "STANDARD"
 }
 
 resource "aws_eks_access_policy_association" "dgimeno" {
-  depends_on = [aws_eks_access_entry.dgimeno]
+  depends_on    = [aws_eks_access_entry.dgimeno]
   cluster_name  = aws_eks_cluster.eks.name
   policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSAdminPolicy"
   principal_arn = data.aws_iam_user.dgimeno.arn
