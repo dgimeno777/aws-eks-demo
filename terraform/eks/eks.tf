@@ -27,3 +27,20 @@ resource "aws_eks_cluster" "eks" {
     aws_iam_role_policy_attachment.eks_amazon_eks_vpc_resource_controller,
   ]
 }
+
+resource "aws_eks_access_entry" "dgimeno" {
+  cluster_name      = aws_eks_cluster.eks.name
+  principal_arn     = data.aws_iam_user.dgimeno.arn
+  type              = "STANDARD"
+}
+
+resource "aws_eks_access_policy_association" "dgimeno" {
+  depends_on = [aws_eks_access_entry.dgimeno]
+  cluster_name  = aws_eks_cluster.eks.name
+  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSAdminPolicy"
+  principal_arn = data.aws_iam_user.dgimeno.arn
+
+  access_scope {
+    type = "cluster"
+  }
+}
